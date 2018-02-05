@@ -1,37 +1,29 @@
-//morse_code by LED
 /*
+  Morse-code Generator
+ 
   This code was written by Ebrahim Bawazir in 2013 and updated in 2015
           U R FREE TO USE IT AND MODIFY IT AS U WANT
                       *****************
+   Modified by Viktor Sjölind and Alexander Tokos in 2018
 */
-int led =13;//the led pin
-int speaker = 11; //speaker pin
-int freq = 700;
-int divider = 3;
-char input;// to save the input
-bool command = false;
+int LED = 13; // The led pin
+int SPEAKER = 11; // The speaker pin
+int FREQ = 700; // Frequency of the speaker beep
+char input; // To save the input
+int DELAY = 50; // Base delay duration
 
 void setup () {
-  pinMode (led,OUTPUT);//tell that the 13 pin is an output
-  Serial.begin(9600);//for the connect with the boared
+  pinMode (LED,OUTPUT); // Tell that pin 13 is an output
+  pinMode (SPEAKER, OUTPUT); // Tell that pin 11 is an output
+  Serial.begin(9600); // For the connection with the board
 }
 
 void loop () {
   if (Serial.available()) {
     input = Serial.read();//read the input
-
-    if (input == '/'){ //command incoming
-      command = true;
-    }
-
-    if(command){
-
-      
-    }
     
-    else{
-      if (input == 'a' || input == 'A') {lA();}//if the input is a or A go to function lA
-      if (input == 'b' || input == 'B') {lB();}//same but with b letter
+    if (input == 'a' || input == 'A') {lA();}//if the input is a or A go to function lA
+    if (input == 'b' || input == 'B') {lB();}//same but with b letter
     if (input == 'c' || input == 'C') {lC();}
     if (input == 'd' || input == 'D') {lD();}
     if (input == 'e' || input == 'E') {lE();}
@@ -69,11 +61,11 @@ void loop () {
     if (input == ' ') {space();}//the space
     Serial.println (input);//print the latter saved in the input var
     }
-  }
 }
-//fonctions for the letters and the numbers
-void lA () {dot();dash();shortspace();}//letter A in morse code!
-void lB () {dash();dot();dot();dot();shortspace();}//same for B
+
+/* Functions for the letters and the numbers */
+void lA () {dot();dash();shortspace();}                 //letter A in morse code!
+void lB () {dash();dot();dot();dot();shortspace();}     //same for B
 void lC () {dash();dot();dash();dot();shortspace();}
 void lD () {dash();dot();dot();shortspace();}
 void lE () {dot();shortspace();}
@@ -108,22 +100,36 @@ void n7 () {dash();dash();dot();dot();dot();shortspace();}
 void n8 () {dash();dash();dash();dot();dot();shortspace();}
 void n9 () {dash();dash();dash();dash();dot();shortspace();}
 void n0 () {dash();dash();dash();dash();dash();shortspace();}
-void space () {delay (1200/divider);}//space between words
+
+/* Delay between the words */
+void space () {
+  delay (DELAY*4);
+  }
+
+/* Delay between the letters */
+void shortspace () {
+  delay(DELAY*2);
+  }
+
+/* Turns the led and speaker on for (base) amount of time and then off for the same amount of time */
 void dot () {
-  digitalWrite(led,HIGH);
-  tone(speaker, freq);
-  delay (300/divider);
-  digitalWrite(led,LOW);
-  noTone(speaker); 
-  delay (300/divider);
-  }//the dot this code make the led on for 300 than off for 300
+  digitalWrite(LED,HIGH);
+  tone(SPEAKER, FREQ);
+  delay (DELAY);
+  digitalWrite(LED,LOW);
+  noTone(SPEAKER); 
+  delay (DELAY);
+  }
+
+/* Turns the led and speaker on for (base*3) amount of time and then off for (base) time */
 void dash () {
-  digitalWrite(led,HIGH);
-  tone(speaker, freq);
-  delay (900/divider);
-  digitalWrite(led,LOW);
-  noTone(speaker); 
-  delay (300/divider);
-  }//the dash this code make the led on for 900 than off for 300
-void shortspace () {delay(600/divider);}//space between letters
-/*done*/
+  digitalWrite(LED,HIGH);
+  tone(SPEAKER, FREQ);
+  delay (DELAY*3);
+  digitalWrite(LED,LOW);
+  noTone(SPEAKER); 
+  delay (DELAY);
+  }
+
+
+
