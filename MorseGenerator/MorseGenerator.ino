@@ -5,7 +5,12 @@
                       *****************
 */
 int led =13;//the led pin
+int speaker = 11; //speaker pin
+int freq = 700;
+int divider = 3;
 char input;// to save the input
+bool command = false;
+
 void setup () {
   pinMode (led,OUTPUT);//tell that the 13 pin is an output
   Serial.begin(9600);//for the connect with the boared
@@ -14,8 +19,19 @@ void setup () {
 void loop () {
   if (Serial.available()) {
     input = Serial.read();//read the input
-    if (input == 'a' || input == 'A') {lA();}//if the input is a or A go to function lA
-    if (input == 'b' || input == 'B') {lB();}//same but with b letter
+
+    if (input == '/'){ //command incoming
+      command = true;
+    }
+
+    if(command){
+
+      
+    }
+    
+    else{
+      if (input == 'a' || input == 'A') {lA();}//if the input is a or A go to function lA
+      if (input == 'b' || input == 'B') {lB();}//same but with b letter
     if (input == 'c' || input == 'C') {lC();}
     if (input == 'd' || input == 'D') {lD();}
     if (input == 'e' || input == 'E') {lE();}
@@ -52,7 +68,7 @@ void loop () {
     if (input == '0') {n0();}
     if (input == ' ') {space();}//the space
     Serial.println (input);//print the latter saved in the input var
-    
+    }
   }
 }
 //fonctions for the letters and the numbers
@@ -92,8 +108,22 @@ void n7 () {dash();dash();dot();dot();dot();shortspace();}
 void n8 () {dash();dash();dash();dot();dot();shortspace();}
 void n9 () {dash();dash();dash();dash();dot();shortspace();}
 void n0 () {dash();dash();dash();dash();dash();shortspace();}
-void space () {delay (1200);}//space between words
-void dot () {digitalWrite(led,HIGH); delay (300); digitalWrite(led,LOW); delay (300);}//the dot this code make the led on for 300 than off for 300
-void dash () {digitalWrite(led,HIGH); delay (900); digitalWrite(led,LOW); delay (300);}//the dash this code make the led on for 900 than off for 300
-void shortspace () {delay(600);}//space between letters
+void space () {delay (1200/divider);}//space between words
+void dot () {
+  digitalWrite(led,HIGH);
+  tone(speaker, freq);
+  delay (300/divider);
+  digitalWrite(led,LOW);
+  noTone(speaker); 
+  delay (300/divider);
+  }//the dot this code make the led on for 300 than off for 300
+void dash () {
+  digitalWrite(led,HIGH);
+  tone(speaker, freq);
+  delay (900/divider);
+  digitalWrite(led,LOW);
+  noTone(speaker); 
+  delay (300/divider);
+  }//the dash this code make the led on for 900 than off for 300
+void shortspace () {delay(600/divider);}//space between letters
 /*done*/
